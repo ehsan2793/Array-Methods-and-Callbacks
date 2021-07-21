@@ -27,7 +27,7 @@ hint - you should be looking at the stage key inside of the objects
 
 function getFinals(data) {
    const finalstage = data.filter(item => item.Stage === 'Final');
-   return finalstage
+   return finalstage;
 }
 console.log("task 2: ",getFinals(fifaData))
 
@@ -53,11 +53,17 @@ Use the higher-order function getWinners to do the following:
 3. Determines the winner (home or away) of each `finals` game. 
 4. Returns the names of all winning countries in an array called `winners` */ 
 
-function getWinners(/* code here */) {
-    /* code here */
+function getWinners(data,getFinalscb) {
+   const winner =getFinalscb(data).map(function(item) {
+       if(item['Home Team Goals'] > item['Away Team Goals']) {
+           return item['Home Team Name']
+       }else {
+           return item['Away Team Name']
+       }
+   })
+   return winner;
 }
-
-
+console.log("task 4 :",getWinners(fifaData,getFinals))
 
 /* 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Task 5: 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 
 Use the higher-order function getWinnersByYear to do the following:
@@ -69,7 +75,13 @@ Use the higher-order function getWinnersByYear to do the following:
 hint: the strings returned need to exactly match the string in step 4.
  */
 
-function getWinnersByYear(/* code here */) {
+function getWinnersByYear(data,getYearscb,getWinnerscb) {
+    const winners = getWinnerscb(data, getFinals);
+    // console.log("winnssssssssers",winners)
+    const years = getYearscb(data, getFinals);
+    return winners.map(function(item,index) {
+        return `In ${years[index]}, ${item} won the world cup!`;
+    })
     /* code here */
 }
 
@@ -85,12 +97,12 @@ Use the higher order function getAverageGoals to do the following:
  Example of invocation: getAverageGoals(getFinals(fifaData));
 */
 
-function getAverageGoals(/* code here */) {
-   /* code here */
+function getAverageGoals(getFinalscb) {
+   const average = getFinalscb.reduce(function(acc,item) {
+       return acc + item['Home Team Goals'] + item['Away Team Goals'];
+   },0);
+   return (average/getFinalscb.length).toFixed(2);
 }
-
-
-
 
 /// 🥅 STRETCH 🥅 ///
 
